@@ -20,7 +20,7 @@ public class TankFrame extends Frame {
 	List<Explode> explodes = new ArrayList<>();
 	
 	
-	static final int GAME_WIDTH = 1080, GAME_HEIGHT = 960;
+	static final int GAME_WIDTH = Integer.parseInt(PropertyMgr.get("gameWidth").toString()), GAME_HEIGHT = Integer.parseInt(PropertyMgr.get("gameHeight").toString());
 
 	public TankFrame() {
 		setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -175,5 +175,9 @@ public class TankFrame extends Frame {
 					myTank.setDir(Dir.DOWN);
 			}
 		}
+	}
+
+	public List<Bullet> getBullets() {
+		return bullets;
 	}
 }

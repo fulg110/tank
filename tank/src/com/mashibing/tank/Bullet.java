@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class Bullet {
-	private static final int SPEED = 6;
+	private static final int SPEED =Integer.parseInt(PropertyMgr.get("bulltetSpeed").toString());
 	public static int WIDTH = ResourceMgr.bulletD.getWidth();
 	public static int HEIGHT = ResourceMgr.bulletD.getHeight();
 	
@@ -14,7 +14,7 @@ public class Bullet {
 	private Dir dir;
 	
 	private boolean living = true;
-	TankFrame tf = null;
+	public TankFrame tf = null;
 	private Group group = Group.BAD;
 	
 	public Bullet(int x, int y, Dir dir, Group group, TankFrame tf) {
@@ -28,6 +28,8 @@ public class Bullet {
 		rect.y = this.y;
 		rect.width = WIDTH;
 		rect.height = HEIGHT;
+
+		tf.getBullets().add(this);
 				
 	}
 	

@@ -1,2 +1,8 @@
 #tanks count at initialization
 initTankCount=10
+tankSpeed=5
+bulltetSpeed=10
+gameWidth=1080
+gameHeight=720
+goodStrategy=com.mashibing.tank.Strategy.FourFireStrategy
+badStrategy=com.mashibing.tank.Strategy.DefauleStrategy
