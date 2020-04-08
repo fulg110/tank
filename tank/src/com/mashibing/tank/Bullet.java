@@ -1,9 +1,12 @@
 package com.mashibing.tank;
 
+import com.mashibing.tank.factroy.BaseBullet;
+import com.mashibing.tank.factroy.BaseTank;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-public class Bullet {
+public class Bullet extends BaseBullet {
 	private static final int SPEED =Integer.parseInt(PropertyMgr.get("bulltetSpeed").toString());
 	public static int WIDTH = ResourceMgr.bulletD.getWidth();
 	public static int HEIGHT = ResourceMgr.bulletD.getHeight();
@@ -29,8 +32,7 @@ public class Bullet {
 		rect.width = WIDTH;
 		rect.height = HEIGHT;
 
-		tf.getBullets().add(this);
-				
+
 	}
 	
 	public Group getGroup() {
@@ -89,7 +91,7 @@ public class Bullet {
 		
 	}
 
-	public void collideWith(Tank tank) {
+	public void collideWith(BaseTank tank) {
 		if(this.group == tank.getGroup()) return;
 		
 		if(rect.intersects(tank.rect)) {

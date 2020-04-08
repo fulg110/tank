@@ -3,30 +3,20 @@ package com.mashibing.tank;
 import com.mashibing.tank.Strategy.DefauleStrategy;
 import com.mashibing.tank.Strategy.FireStrategy;
 import com.mashibing.tank.Strategy.FourFireStrategy;
+import com.mashibing.tank.factroy.BaseTank;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
-public class Tank {
+public class Tank extends BaseTank {
     private static final int SPEED = Integer.parseInt(PropertyMgr.get("tankSpeed").toString());
     public static int WIDTH = ResourceMgr.goodTankU.getWidth();
-
     public static int HEIGHT = ResourceMgr.goodTankU.getHeight();
-
-    Rectangle rect = new Rectangle();
-
     private Random random = new Random();
-
     private int x, y;
-
-    private Dir dir = Dir.DOWN;
-
-    private boolean moving = true;
     public TankFrame tf = null;
-    private boolean living = true;
-    private Group group = Group.BAD;
     private FireStrategy fs;
 
     public Tank(int x, int y, Dir dir, Group group, TankFrame tf) {
@@ -34,7 +24,7 @@ public class Tank {
         this.x = x;
         this.y = y;
         this.dir = dir;
-        this.group = group;
+        super.group = group;
         this.tf = tf;
 
         rect.x = this.x;
@@ -56,9 +46,14 @@ public class Tank {
         }
         fs.fire(this);
 
-        //tf.bullets.add(new Bullet(bX, bY, this.dir, this.group, this.tf));
+        //tf.bullets.add(new Bullet(bX, bY, this.dir, this.getGroup(), this.tf));
 
-        if (this.group == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
+        if (this.getGroup() == Group.GOOD) new Thread(() -> new Audio("audio/tank_fire.wav").play()).start();
+    }
+
+    @Override
+    public void setDir(Dir left) {
+        this.dir = left;
     }
 
     public Dir getDir() {
@@ -69,27 +64,16 @@ public class Tank {
         return x;
     }
 
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
     public int getY() {
         return y;
     }
 
-    public boolean isMoving() {
-        return moving;
-    }
+
 
     private void move() {
 
         if (!moving) return;
-
+        //if (group.equals(Group.GOOD))
         switch (dir) {
             case LEFT:
                 x -= SPEED;
@@ -105,10 +89,10 @@ public class Tank {
                 break;
         }
 
-        if (this.group == Group.BAD && random.nextInt(100) > 95)
+        if (group == Group.BAD && random.nextInt(100) > 95)
             this.fire();
 
-        if (this.group == Group.BAD && random.nextInt(100) > 95)
+        if (group == Group.BAD && random.nextInt(100) > 95)
             randomDir();
 
         boundsCheck();
@@ -136,16 +120,16 @@ public class Tank {
 
         switch (dir) {
             case LEFT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);
+                g.drawImage(group == Group.GOOD ? ResourceMgr.goodTankL : ResourceMgr.badTankL, x, y, null);
                 break;
             case UP:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU, x, y, null);
+                g.drawImage(group == Group.GOOD ? ResourceMgr.goodTankU : ResourceMgr.badTankU, x, y, null);
                 break;
             case RIGHT:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR, x, y, null);
+                g.drawImage(group == Group.GOOD ? ResourceMgr.goodTankR : ResourceMgr.badTankR, x, y, null);
                 break;
             case DOWN:
-                g.drawImage(this.group == Group.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD, x, y, null);
+                g.drawImage(group == Group.GOOD ? ResourceMgr.goodTankD : ResourceMgr.badTankD, x, y, null);
                 break;
         }
 
@@ -153,10 +137,6 @@ public class Tank {
 
     }
 
-
-    public void setDir(Dir dir) {
-        this.dir = dir;
-    }
 
     public void setMoving(boolean moving) {
         this.moving = moving;

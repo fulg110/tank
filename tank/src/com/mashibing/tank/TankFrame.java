@@ -1,5 +1,10 @@
 package com.mashibing.tank;
 
+import com.mashibing.tank.factroy.BaseBullet;
+import com.mashibing.tank.factroy.BaseTank;
+import com.mashibing.tank.factroy.DefaultFacadeFactory;
+import com.mashibing.tank.factroy.FacadeFactory;
+
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -14,13 +19,14 @@ import java.util.List;
 
 public class TankFrame extends Frame {
 
-	Tank myTank = new Tank(200, 400, Dir.DOWN, Group.GOOD, this);
-	List<Bullet> bullets = new ArrayList<>();
-	List<Tank> tanks = new ArrayList<>();
+	List<BaseBullet> bullets = new ArrayList<>();
+	public List<BaseTank> tanks = new ArrayList<>();
 	List<Explode> explodes = new ArrayList<>();
-	
-	
-	static final int GAME_WIDTH = Integer.parseInt(PropertyMgr.get("gameWidth").toString()), GAME_HEIGHT = Integer.parseInt(PropertyMgr.get("gameHeight").toString());
+	public FacadeFactory facadeFactory = new DefaultFacadeFactory();
+	BaseTank myTank = facadeFactory.gettank(200, 400, Dir.DOWN, Group.GOOD, this);
+
+
+	public static final int GAME_WIDTH = Integer.parseInt(PropertyMgr.get("gameWidth").toString()), GAME_HEIGHT = Integer.parseInt(PropertyMgr.get("gameHeight").toString());
 
 	public TankFrame() {
 		setSize(GAME_WIDTH, GAME_HEIGHT);
@@ -154,7 +160,6 @@ public class TankFrame extends Frame {
 			default:
 				break;
 			}
-
 			setMainTankDir();
 		}
 
@@ -177,7 +182,7 @@ public class TankFrame extends Frame {
 		}
 	}
 
-	public List<Bullet> getBullets() {
+	public List<BaseBullet> getBullets() {
 		return bullets;
 	}
 }
